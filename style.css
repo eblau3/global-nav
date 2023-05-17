@@ -69,7 +69,7 @@
   width: 50vw;
   height: 100vh;
   background-color: #fff;
-  transition: all 0.4s ease;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
 }
 
 /* overlay */
@@ -104,7 +104,7 @@
 .gnav.is-active .gnav__modal {
   transform: unset;
   visibility: visible;
-  transition: all 0.4s ease;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
 }
 .gnav.is-active .gnav__overlay {
   visibility: visible;
