@@ -1,6 +1,4 @@
-const globalNavigation = () => {
-  const toggleClass = (el) => el && el.classList.toggle('is-active');
-  
+const globalNav = (element) => {
   const fixScroll = () => {
     const target = document.querySelector('body');
     const scrollPos = window.scrollY;
@@ -16,25 +14,25 @@ const globalNavigation = () => {
     window.scrollTo(0, fixedPos);
   };
 
-  const target = document.querySelector('.js-gnav');
-  const open = target.querySelector('.js-gnav-open');
-  const close = target.querySelector('.js-gnav-close');
-  const overlay = target.querySelector('.js-gnav-overlay');
+  const toggleClass = (el) => el && el.classList.toggle('is-active');
 
-  open.addEventListener('click', () => {
-    fixScroll();
-    toggleClass(target);
-  });
+  const toggle = element;
+  const modal = document.querySelector('.js-global-nav');
 
-  close.addEventListener('click', () => {
-    toggleClass(target);
-    cancelFixScroll();
-  });
-
-  overlay.addEventListener('click', () => {
-    toggleClass(target);
-    cancelFixScroll();
+  toggle.addEventListener('click', () => {
+    if(toggle.classList.contains('is-active')) {
+      toggleClass(modal);
+      toggleClass(toggle);
+      cancelFixScroll();
+    } else {
+      fixScroll();
+      toggleClass(toggle);
+      toggleClass(modal);
+    };
   });
 };
 
-window.addEventListener('DOMContentLoaded', globalNavigation());
+window.addEventListener('DOMContentLoaded', () => {
+  const target = document.querySelector('.js-global-nav-toggle');
+  if(target) globalNav(target);
+});
