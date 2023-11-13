@@ -1,6 +1,5 @@
-/* toggle */
 .global-nav-toggle {
-  z-index: 999;
+  z-index: 900;
   position: fixed;
   top: 0;
   right: 0;
@@ -49,9 +48,8 @@
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
-/* global-nav */
 .global-nav {
-  z-index: 900;
+  z-index: 800;
   position: fixed;
   top: 0;
   left: 0;
