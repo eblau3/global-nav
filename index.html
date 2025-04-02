@@ -6,38 +6,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="style.css"></link>
+  <script src="global-nav.js" defer></script>
   <style>
     * {
       box-sizing: border-box;
       margin: unset;
       padding: unset;
     }
+    html {
+      scroll-behavior: smooth;
+      scroll-margin-top: 90px;
+    }
     body {
       width: 100%;
+    }
+    button {
+      background-color: transparent;
+      border: none;
+    }
+    ul {
+      list-style-type: none;
     }
   </style>
 </head>
 <body>
-  <div class="global-nav-toggle js-global-nav-toggle"><span class="global-nav-toggle__line"></span></div>
+  <button class="global-nav-toggle js-global-nav-toggle" aria-expanded="false" aria-controls="global-nav" aria-label="メニューを開く"><span class="global-nav-toggle__line"></span></button>
 
-  <div class="global-nav js-global-nav">
-    <div class="global-nav__content">
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem nesciunt minus eum dolores facere voluptas aliquid nobis quasi inventore tenetur repellat, aperiam accusantium consectetur. Eos, labore. Itaque rem officia quos.</p>
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem nesciunt minus eum dolores facere voluptas aliquid nobis quasi inventore tenetur repellat, aperiam accusantium consectetur. Eos, labore. Itaque rem officia quos.</p>
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem nesciunt minus eum dolores facere voluptas aliquid nobis quasi inventore tenetur repellat, aperiam accusantium consectetur. Eos, labore. Itaque rem officia quos.</p>
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem nesciunt minus eum dolores facere voluptas aliquid nobis quasi inventore tenetur repellat, aperiam accusantium consectetur. Eos, labore. Itaque rem officia quos.</p>
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem nesciunt minus eum dolores facere voluptas aliquid nobis quasi inventore tenetur repellat, aperiam accusantium consectetur. Eos, labore. Itaque rem officia quos.</p>
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem nesciunt minus eum dolores facere voluptas aliquid nobis quasi inventore tenetur repellat, aperiam accusantium consectetur. Eos, labore. Itaque rem officia quos.</p>
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem nesciunt minus eum dolores facere voluptas aliquid nobis quasi inventore tenetur repellat, aperiam accusantium consectetur. Eos, labore. Itaque rem officia quos.</p>
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem nesciunt minus eum dolores facere voluptas aliquid nobis quasi inventore tenetur repellat, aperiam accusantium consectetur. Eos, labore. Itaque rem officia quos.</p>
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem nesciunt minus eum dolores facere voluptas aliquid nobis quasi inventore tenetur repellat, aperiam accusantium consectetur. Eos, labore. Itaque rem officia quos.</p>
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem nesciunt minus eum dolores facere voluptas aliquid nobis quasi inventore tenetur repellat, aperiam accusantium consectetur. Eos, labore. Itaque rem officia quos.</p>
+  <nav id="global-nav" class="global-nav js-global-nav" aria-hidden="true">
+    <div class="global-nav__inner">
+      <ul>
+        <li>
+          <a href="#a-1">アンカーリンク</a>
+        </li>
+        <li>
+          <a href="#a-2">アンカーリンク</a>
+        </li>
+      </ul>
     </div>
-  </div>
+  </nav>
 
-  <section style="height: 100vh; background-color: cadetblue;"></section>
-  <section style="height: 100vh; background-color: burlywood;"></section>
-
-  <script src="main.js"></script>
+  <section id="a-1" style="height: 100vh; background-color: cadetblue;"></section>
+  <section id="a-2" style="height: 100vh; background-color: burlywood;"></section>
 </body>
 </html>
