@@ -1,30 +1,30 @@
-const globalNav = (element) => {
+const globalNav = (el) => {
   /**
    * スクロール位置を固定
    */
   const fixScroll = () => {
-    const target = document.body;
+    const bodyEl = document.body;
     const scrollPos = window.scrollY;
     
-    target.dataset.scrollPos = scrollPos;
-    target.style.position = 'fixed';
-    target.style.top = `-${scrollPos}px`;
-    target.style.left = '0';
-    target.style.width = '100%';
+    bodyEl.dataset.scrollPos = scrollPos;
+    bodyEl.style.position = 'fixed';
+    bodyEl.style.top = `-${scrollPos}px`;
+    bodyEl.style.left = '0';
+    bodyEl.style.width = '100%';
   };
 
   /**
    * スクロール位置の固定を解除
    */
   const cancelFixScroll = () => {
-    const target = document.body;
-    if (target.style.position === 'fixed') {
-      const scrollPos = Number(target.dataset.scrollPos || 0);
+    const bodyEl = document.body;
+    if (bodyEl.style.position === 'fixed') {
+      const scrollPos = Number(bodyEl;.dataset.scrollPos || 0);
       
-      target.style.position = 'static';
-      target.style.top = '';
-      target.style.left = '';
-      target.style.width = '';
+      bodyEl.style.position = 'static';
+      bodyEl.style.top = '';
+      bodyEl.style.left = '';
+      bodyEl.style.width = '';
       window.scrollTo({ top: scrollPos, behavior: 'instant' });
     }
   };
@@ -33,12 +33,12 @@ const globalNav = (element) => {
    * ナビゲーションを閉じる
    */
   const closeNav = () => {
-    modal.classList.remove(activeClassName);
-    toggle.classList.remove(activeClassName);
+    modalEl.classList.remove(NAV_ACTIVE_CLASS);
+    toggleEl.classList.remove(NAV_ACTIVE_CLASS);
     cancelFixScroll();
-    modal.setAttribute('aria-hidden', 'true');
-    toggle.setAttribute('aria-expanded', 'false');
-    toggle.focus();
+    modalEl.setAttribute('aria-hidden', 'true');
+    toggleEl.setAttribute('aria-expanded', 'false');
+    toggleEl.focus();
   };
 
   /**
@@ -46,36 +46,34 @@ const globalNav = (element) => {
    */
   const openNav = () => {
     fixScroll();
-    modal.classList.add(activeClassName);
-    toggle.classList.add(activeClassName);
-    modal.setAttribute('aria-hidden', 'false');
-    toggle.setAttribute('aria-expanded', 'true');
-    modal.querySelector('a').focus();
+    modalEl.classList.add(NAV_ACTIVE_CLASS);
+    toggleEl.classList.add(NAV_ACTIVE_CLASS);
+    modalEl.setAttribute('aria-hidden', 'false');
+    toggleEl.setAttribute('aria-expanded', 'true');
+    modalEl.querySelector('a').focus();
   };
 
-  const modal = element;
-  const toggle = document.querySelector('.js-global-nav-toggle');
-  const anchorLinks = modal.querySelectorAll('a[href^="#"]');
-  const activeClassName = 'is-active';
+  const modalEl = el;
+  const toggleEl = document.querySelector('.js-global-nav-toggle');
+  const anchorLinkEls = modalEl.querySelectorAll('a[href^="#"]');
+  const NAV_ACTIVE_CLASS = 'is-active';
 
-  toggle.addEventListener('click', () => {
-    if (toggle.classList.contains(activeClassName)) {
+  toggleEl.addEventListener('click', () => {
+    if (toggleEl.classList.contains(NAV_ACTIVE_CLASS)) {
       closeNav();
     } else {
       openNav();
     }
   });
 
-  if (anchorLinks.length > 0) {
-    anchorLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        closeNav();
-      });
+  if (anchorLinkEls.length > 0) {
+    anchorLinkEls.forEach(link => {
+      link.addEventListener('click', () => closeNav());
     });
   }
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-  const target = document.querySelector('.js-global-nav');
-  if (target) globalNav(target);
+  const globalNavEl = document.querySelector('.js-global-nav');
+  if (globalNavEl) globalNav(globalNavEl);
 });
