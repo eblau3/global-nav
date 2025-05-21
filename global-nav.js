@@ -19,7 +19,7 @@ const globalNav = (el) => {
   const cancelFixScroll = () => {
     const bodyEl = document.body;
     if (bodyEl.style.position === 'fixed') {
-      const scrollPos = Number(bodyEl;.dataset.scrollPos || 0);
+      const scrollPos = Number(bodyEl.dataset.scrollPos || 0);
       
       bodyEl.style.position = 'static';
       bodyEl.style.top = '';
