@@ -1,79 +1,112 @@
-const globalNav = (el) => {
+/**
+ * グローバルナビゲーションの制御
+ * @param {HTMLElement} element - 開閉トリガーとなるボタン要素
+ */
+const initializeGlobalNav = (element) => {
+  // 状態管理用の共通クラス名
+  const MODAL_ACTIVE_CLASS = 'is-active';
+
+  // 要素のキャッシュ
+  const toggleButton = element;
+  const modal = document.querySelector('.js-global-nav');
+  const anchorLinks = modal.querySelectorAll('a[href^="#"]');
+
   /**
-   * スクロール位置を固定
+   * 背景スクロールの固定
+   * モーダル背面でのスクロールを防止し、現在の位置を保持します。
    */
-  const fixScroll = () => {
-    const bodyEl = document.body;
-    const scrollPos = window.scrollY;
-    
-    bodyEl.dataset.scrollPos = scrollPos;
-    bodyEl.style.position = 'fixed';
-    bodyEl.style.top = `-${scrollPos}px`;
-    bodyEl.style.left = '0';
-    bodyEl.style.width = '100%';
+  const lockScroll = () => {
+    const scrollPosition = window.scrollY;
+
+    Object.assign(document.body.style, {
+      position: "fixed",
+      top: `-${scrollPosition}px`,
+      width: "100%",
+      overflowY: "scroll", // スクロールバー消失によるガタつきを防止
+    });
   };
 
   /**
-   * スクロール位置の固定を解除
+   * 背景スクロールの解除
+   * 固定を解き、元のスクロール位置へ復元します。
    */
-  const cancelFixScroll = () => {
-    const bodyEl = document.body;
-    if (bodyEl.style.position === 'fixed') {
-      const scrollPos = Number(bodyEl.dataset.scrollPos || 0);
-      
-      bodyEl.style.position = 'static';
-      bodyEl.style.top = '';
-      bodyEl.style.left = '';
-      bodyEl.style.width = '';
-      window.scrollTo({ top: scrollPos, behavior: 'instant' });
-    }
-  };
+  const unlockScroll = () => {
+    const scrollPosition = parseInt(document.body.style.top || "0", 10) * -1;
 
-  /**
-   * ナビゲーションを閉じる
-   */
-  const closeNav = () => {
-    modalEl.classList.remove(NAV_ACTIVE_CLASS);
-    toggleEl.classList.remove(NAV_ACTIVE_CLASS);
-    cancelFixScroll();
-    modalEl.setAttribute('aria-hidden', 'true');
-    toggleEl.setAttribute('aria-expanded', 'false');
-    toggleEl.focus();
+    Object.assign(document.body.style, {
+      position: "",
+      top: "",
+      width: "",
+      overflowY: "",
+    });
+    window.scrollTo(0, scrollPosition);
   };
 
   /**
    * ナビゲーションを開く
    */
-  const openNav = () => {
-    fixScroll();
-    modalEl.classList.add(NAV_ACTIVE_CLASS);
-    toggleEl.classList.add(NAV_ACTIVE_CLASS);
-    modalEl.setAttribute('aria-hidden', 'false');
-    toggleEl.setAttribute('aria-expanded', 'true');
-    modalEl.querySelector('a').focus();
+  const openModal = () => {
+    lockScroll();
+    modal.classList.add(MODAL_ACTIVE_CLASS);
+    toggleButton.classList.add(MODAL_ACTIVE_CLASS);
+    
+    // アクセシビリティ属性の更新
+    modal.setAttribute('aria-hidden', 'false');
+    toggleButton.setAttribute('aria-expanded', 'true');
+    
+    // 最初のリンクにフォーカスを移動（キーボード操作対応）
+    const firstLink = modal.querySelector('a');
+    if (firstLink) firstLink.focus();
   };
 
-  const modalEl = el;
-  const toggleEl = document.querySelector('.js-global-nav-toggle');
-  const anchorLinkEls = modalEl.querySelectorAll('a[href^="#"]');
-  const NAV_ACTIVE_CLASS = 'is-active';
+  /**
+   * ナビゲーションを閉じる
+   */
+  const closeModal = () => {
+    modal.classList.remove(MODAL_ACTIVE_CLASS);
+    toggleButton.classList.remove(MODAL_ACTIVE_CLASS);
+    unlockScroll();
+    
+    // アクセシビリティ属性の更新
+    modal.setAttribute('aria-hidden', 'true');
+    toggleButton.setAttribute('aria-expanded', 'false');
+    
+    // トリガーボタンにフォーカスを戻す
+    toggleButton.focus();
+  };
 
-  toggleEl.addEventListener('click', () => {
-    if (toggleEl.classList.contains(NAV_ACTIVE_CLASS)) {
-      closeNav();
+  // --- イベントリスナーの設定 ---
+
+  // 開閉ボタンのクリックイベント
+  toggleButton.addEventListener('click', () => {
+    if (toggleButton.classList.contains(MODAL_ACTIVE_CLASS)) {
+      closeModal();
     } else {
-      openNav();
+      openModal();
     }
   });
 
-  if (anchorLinkEls.length > 0) {
-    anchorLinkEls.forEach(link => {
-      link.addEventListener('click', () => closeNav());
+  // Escキーが押された際、モーダルが開いていれば閉じる
+  window.addEventListener("keydown", (event) => {
+    if (event.key === 'Escape' && toggleButton.classList.contains(MODAL_ACTIVE_CLASS)) {
+      closeModal();
+    }
+  });
+
+  // ページ内リンク（アンカー）クリック時に自動で閉じる
+  if (anchorLinks.length > 0) {
+    anchorLinks.forEach(anchorlink => {
+      anchorlink.addEventListener('click', () => closeModal());
     });
   }
 };
 
+/**
+ * DOMコンテンツの読み込み完了後に初期化を実行
+ */
 window.addEventListener('DOMContentLoaded', () => {
-  const globalNavEl = document.querySelector('.js-global-nav');
-  if (globalNavEl) globalNav(globalNavEl);
+  const target = document.querySelector('.js-global-nav-toggle');
+  if (target) {
+    initializeGlobalNav(target);
+  }
 });
